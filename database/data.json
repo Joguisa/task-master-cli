@@ -1,0 +1,27 @@
+[
+    {
+        "id": "7c5ae0f3-66fb-4ffd-adb1-d6e2d84a4012",
+        "desc": "Lectura matutina",
+        "completed": false
+    },
+    {
+        "id": "2bas2ae0f3-66fb-4ffd-adb1-d6e2d84a4012",
+        "desc": "Correr",
+        "completed": false
+    },
+    {
+        "id": "2ed4b955-b6a1-4234-9724-868d9050c7d5",
+        "desc": "Recolectar piedras",
+        "completed": false
+    },
+    {
+        "id": "69e68b30-37c6-4d42-9c22-171d13626d1a",
+        "desc": "recolectar rocas",
+        "completed": false
+    },
+    {
+        "id": "b3bb9c38-07a2-4820-a6d0-271cf15d6311",
+        "desc": "Estudiar nodejs",
+        "completed": false
+    }
+]

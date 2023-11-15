@@ -1,7 +1,7 @@
 import 'colors';
-// import * as inquirer from 'inquirer';
+import * as inquirer from 'inquirer';
 
-const inquirer =  require('inquirer')
+// const inquirer =  require('inquirer')
 
 const questions = [
     {
@@ -50,4 +50,16 @@ export const inquireMenu = async() => {
     const { option } = await inquirer.default.prompt(questions);
 
     return option;
+}
+
+export const pausa = async() => { 
+    const question = [
+        {
+            type: 'input',
+            name: 'enter',
+            message: `Press ${'ENTER'.green} to continue`
+        }
+    ];
+    await inquirer.default.prompt([question]);
+
 }

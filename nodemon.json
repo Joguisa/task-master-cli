@@ -1,0 +1,5 @@
+{
+    "ignore": ["*.ts", "*.json", "database/*"],
+    "watch": ["src"],
+    "exec": "ts-node src/app.ts"
+}  

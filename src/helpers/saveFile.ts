@@ -13,5 +13,6 @@ export const readDB = () => {
 
     let inf = fs.readFileSync(file, { encoding: 'utf-8' });
     let data = JSON.parse(inf);
+    
     return data;
 }

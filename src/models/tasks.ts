@@ -1,4 +1,5 @@
 import { Task } from "./task";
+import { v4 as uuidv4 } from 'uuid';
 
 export class Tasks {
     _list: Task[] = [];
@@ -28,10 +29,37 @@ export class Tasks {
 
     completeList() {
 
-        // Las tareas deben tener un índice en verde
-        // Completada en verde
-        // Pendiente en rojo
+        console.log();
+        this.listArr.forEach((task, i) =>{
+            let idx = `${i + 1 +'.'}`.green;
+            let {desc, completed} = task;
+            let status = (completed)
+                                ? 'Completada'.green
+                                : 'Pendiente'.red;
+            console.log(`${idx} ${desc} :: ${status}`);
 
+        });
+    }
+
+    listPendingCompleted( completeTask = true ) {
+        console.log();
+        this._list.forEach((task, i) => {
+            let idx = `${i + 1 +'.'}`.green;
+            let {desc, completed} = task;
+            let status = (completed)
+                                ? 'Completada'.green
+                                : 'Pendiente'.red;
+            if (completeTask) {
+                if (completed) {
+                    console.log(`${idx} ${desc} :: ${status}`);
+                }
+            } else {
+                if (!completed) {
+                    console.log(`${idx} ${desc} :: ${status}`);
+                }
+            }
+        })
+        
     }
 
     deleteTask( id : string){

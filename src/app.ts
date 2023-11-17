@@ -24,11 +24,18 @@ const main = async () => {
                 // crear tareas
                 const desc = await readInput('Description: ');
                 tasks.createTask(desc);
-                console.log(desc);
             break;
 
             case '2':
-                console.log(`${ 'Task:'.blue }`, tasks.listArr);
+                tasks.completeList();
+            break;
+
+            case '3':
+                tasks.listPendingCompleted(true);
+            break;
+
+            case '4':
+                tasks.listPendingCompleted(false);
             break;
 
             case '0':
@@ -37,9 +44,9 @@ const main = async () => {
         }
 
         saveDB(tasks.listArr);
-        if (opt !== '0') {
-            await pause();
-        }
+        await pause();
+        // if (opt !== '0') {
+        // }
 
     } while (opt !== '0');
 }

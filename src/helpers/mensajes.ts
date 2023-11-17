@@ -1,15 +1,12 @@
 import 'colors';
 import * as readline from 'readline';
+import { Task } from '../models/task';
 
 export const showMenu = () => {
     return new Promise((resolve) => {
-
-        console.clear();
-
         console.log('==========================='.green);
-        console.log('   Seleccione una opción'.blue);
+        console.log('||          MENU         ||'.green);
         console.log('===========================\n'.green);
-
         console.log(`${'1.'.green} Crear tarea`);
         console.log(`${'2.'.green} Listar tarea`);
         console.log(`${'3.'.green} Listar tareas completadas`);
@@ -23,7 +20,7 @@ export const showMenu = () => {
             output: process.stdout,
         });
 
-        rl.question('Select an option: ', (opt) => {
+        rl.question('Select an option: '.blue, (opt) => {
             rl.close();
             resolve(opt);
         });
@@ -37,7 +34,7 @@ export const pause = () => {
             output: process.stdout,
         });
 
-        rl.question(`\nPress ${'ENTER'.green} para continuar\n`, (opt) => {
+        rl.question(`\nPress ${'ENTER'.green} to continue\n`, (opt) => {
             rl.close();
             resolve(opt);
         });
@@ -62,7 +59,62 @@ export const readInput = async (message: string): Promise<string> => {
                 }
             });
         };
-
         askQuestion();
+    });
+};
+
+export const listTasksToDelete = async (tasks: Task[] = []) => {
+    let choices = tasks.map((task, i) => {
+        let idx = `${i + 1}.`.green;
+        return {
+            value: task.id,
+            name: `${idx} ${task.desc}`,
+        }
+    });
+
+    choices.unshift({
+        value: '0',
+        name: '0. ' + 'Cancel'.red,
+    })
+
+    console.log('Tasks:'.magenta.bold);
+    choices.forEach((choice) => console.log(choice.name));
+
+    const selectedTaskId = await askUser('Select a task: '.magenta, choices);
+    console.log('You selected task with ID:'.blue.bold, selectedTaskId);
+    return selectedTaskId;
+};
+
+const askUser = (question: string, choices: any[]) => {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
+
+    return new Promise<string>((resolve) => {
+        const promptUser = () => {
+            rl.question(question, (selectedTaskIndex) => {
+                const selectedTaskId = choices[Number(selectedTaskIndex) - 1]?.value;
+                // if (selectedTaskId) {
+                //     rl.close();
+                //     resolve(selectedTaskId);
+                // } else {
+                //     console.log('Please enter a valid value');
+                //     promptUser();
+                // }
+                if (selectedTaskIndex == '0') {
+                    // Resolve with '0' for cancellation
+                    rl.close();
+                    resolve('0');
+                } else if (selectedTaskId !== undefined) {
+                    rl.close();
+                    resolve(selectedTaskId);
+                } else {
+                    console.log('Please enter a valid value');
+                    promptUser();
+                }
+            });
+        };
+        promptUser();
     });
 };

@@ -58,7 +58,7 @@ const main = async () => {
             break;
 
             case '0':
-                console.log('Saliendo del programa...');
+                console.log('Exiting the program...');
             break;
         }
 

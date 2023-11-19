@@ -45,7 +45,7 @@ export class Tasks {
             let status = (completed)
                                 ? 'Completed'.green
                                 : 'Pending'.red;
-            let date = (completedDate)
+            let date = (completedDate && completed)
                                 ? `on ${completedDate}`.green
                                 : '';
 

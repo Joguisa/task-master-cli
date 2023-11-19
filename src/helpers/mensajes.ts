@@ -1,6 +1,7 @@
 import 'colors';
 import * as readline from 'readline';
 import { Task } from '../models/task';
+import { TaskChoice } from '../models/taskChoice';
 
 export const showMenu = () => {
     return new Promise((resolve) => {
@@ -64,7 +65,7 @@ export const readInput = async (message: string): Promise<string> => {
 };
 
 export const listTasksToDelete = async (tasks: Task[] = []) => {
-    let choices = tasks.map((task, i) => {
+    let choices : TaskChoice[]  = tasks.map((task, i) => {
         let idx = `${i + 1}.`.green;
         return {
             value: task.id,
@@ -80,12 +81,14 @@ export const listTasksToDelete = async (tasks: Task[] = []) => {
     console.log('Tasks:'.cyan);
     choices.forEach((choice) => console.log(choice.name));
 
-    const selectedTaskId = await askUser('Select a task: '.magenta, choices);
-    selectedTaskId !== '0' ? console.log('You selected task with ID:'.blue, selectedTaskId) : console.log('You selected to cancel'.red);
+    const selectedTaskId= await askUser('Select a task: '.magenta, choices);
+    selectedTaskId !== '0'
+                    ? console.log('You selected task with ID:'.blue, selectedTaskId) 
+                    : console.log('You selected to cancel'.red);
     return selectedTaskId;
 };
 
-const askUser = (question: string, choices: any[]) => {
+const askUser = (question: string, choices: TaskChoice[]) => {
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
@@ -94,7 +97,7 @@ const askUser = (question: string, choices: any[]) => {
     return new Promise<string>((resolve) => {
         const promptUser = () => {
             rl.question(question, (selectedTaskIndex) => {
-                const selectedTaskId = choices[Number(selectedTaskIndex) - 1]?.value;
+                const selectedTaskId  = choices[Number(selectedTaskIndex) - 1]?.value;
                 if (selectedTaskIndex == '0') {
                     rl.close();
                     resolve('0');

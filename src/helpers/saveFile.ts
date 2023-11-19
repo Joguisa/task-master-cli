@@ -1,8 +1,9 @@
 import fs from 'fs';
+import { Task } from '../models/task';
 
 let file = './database/data.json';
 
-export const saveDB = (data: any) => {
+export const saveDB = (data: Task[]) => {
     fs.writeFileSync(file, JSON.stringify(data));
 }
 

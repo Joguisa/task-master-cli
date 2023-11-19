@@ -9,7 +9,7 @@ export class Tasks {
 
     get listArr() {
         let list: Task[] = [];
-        this._list.forEach( task =>{
+        this._list.forEach( (task ) =>{
             list.push( task );
         })
         return list;
@@ -32,8 +32,8 @@ export class Tasks {
             let idx = `${i + 1 +'.'}`.green;
             let {desc, completed} = task;
             let status = (completed)
-                                ? 'Completada'.green
-                                : 'Pendiente'.red;
+                                ? 'Completed'.green
+                                : 'Pending'.red;
             console.log(`${idx} ${desc} :: ${status}`);
         });
     }
@@ -41,16 +41,18 @@ export class Tasks {
     listPendingCompleted( completeTask = true ) {
         this._list.forEach((task, i) => {
             let idx = `${i + 1 +'.'}`.green;
-            let {desc, completed} = task;
+            let {desc, completed, completedDate} = task;
             let status = (completed)
-                                ? 'Completada'.green
-                                : 'Pendiente'.red;
+                                ? 'Completed'.green
+                                : 'Pending'.red;
+            let date = (completedDate)
+                                ? `on ${completedDate}`.green
+                                : '';
 
             if ((completeTask && completed) || (!completeTask && !completed)) {
-                console.log(`${idx} ${desc} :: ${status}`);
+                console.log(`${idx} ${desc} :: ${status} ${date}`);
             }
         });
-        
     }
 
     deleteTask( id : string ) {

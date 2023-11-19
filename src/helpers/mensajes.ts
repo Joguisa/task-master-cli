@@ -7,20 +7,20 @@ export const showMenu = () => {
         console.log('==========================='.green);
         console.log('||          MENU         ||'.green);
         console.log('===========================\n'.green);
-        console.log(`${'1.'.green} Crear tarea`);
-        console.log(`${'2.'.green} Listar tarea`);
-        console.log(`${'3.'.green} Listar tareas completadas`);
-        console.log(`${'4.'.green} Listar tareas pendientes`);
-        console.log(`${'5.'.green} Completar tarea(s)`);
-        console.log(`${'6.'.green} Borrar tarea`);
-        console.log(`${'0.'.red} Salir \n`);
+        console.log(`${'1.'.green} Create task`);
+        console.log(`${'2.'.green} List task`);
+        console.log(`${'3.'.green} List completed tasks`);
+        console.log(`${'4.'.green} List pending tasks`);
+        console.log(`${'5.'.green} Complete task`);
+        console.log(`${'6.'.green} Delete task`);
+        console.log(`${'0.'.red} Go out \n`);
 
         const rl = readline.createInterface({
             input: process.stdin,
             output: process.stdout,
         });
 
-        rl.question('Select an option: '.blue, (opt) => {
+        rl.question('Select an option: '.green, (opt) => {
             rl.close();
             resolve(opt);
         });
@@ -74,14 +74,14 @@ export const listTasksToDelete = async (tasks: Task[] = []) => {
 
     choices.unshift({
         value: '0',
-        name: '0. ' + 'Cancel'.red,
+        name: '0. '.red + 'Cancel'.red,
     })
 
-    console.log('Tasks:'.magenta.bold);
+    console.log('Tasks:'.cyan);
     choices.forEach((choice) => console.log(choice.name));
 
     const selectedTaskId = await askUser('Select a task: '.magenta, choices);
-    console.log('You selected task with ID:'.blue.bold, selectedTaskId);
+    selectedTaskId !== '0' ? console.log('You selected task with ID:'.blue, selectedTaskId) : console.log('You selected to cancel'.red);
     return selectedTaskId;
 };
 
@@ -95,15 +95,7 @@ const askUser = (question: string, choices: any[]) => {
         const promptUser = () => {
             rl.question(question, (selectedTaskIndex) => {
                 const selectedTaskId = choices[Number(selectedTaskIndex) - 1]?.value;
-                // if (selectedTaskId) {
-                //     rl.close();
-                //     resolve(selectedTaskId);
-                // } else {
-                //     console.log('Please enter a valid value');
-                //     promptUser();
-                // }
                 if (selectedTaskIndex == '0') {
-                    // Resolve with '0' for cancellation
                     rl.close();
                     resolve('0');
                 } else if (selectedTaskId !== undefined) {
@@ -118,3 +110,35 @@ const askUser = (question: string, choices: any[]) => {
         promptUser();
     });
 };
+
+
+export const listTasksToChange = async (tasks: Task[] = []) => {
+    let choices = tasks.map((task, i) => {
+        let idx = `${i + 1}.`.green;
+        let isCompleted = task.completed ? 'Completed'.green : 'Pending'.red;
+        let completionInfo = task.completed ? `on: ${task.completedDate}`.green : '';
+        return {
+            value: task.id,
+            name: `${idx} ${task.desc} :: ${isCompleted} ${completionInfo}`,
+            checked: task.completed,
+        };
+    });
+
+    console.log('Tasks:'.cyan);
+    choices.forEach((choice) => console.log(choice.name));
+
+    const selectedTaskId = await askUser('Complete Task: '.magenta, choices);
+    selectedTaskId !== '0' ? console.log('You selected task with ID:'.blue, selectedTaskId) : console.log('You selected to cancel'.red);
+    return selectedTaskId;
+};
+
+export const changeStateTask = async ( taskId : string, tasks: Task[] ) => {
+    let task = tasks.find( task => task.id === taskId);
+    if (task) {
+        task.completed = !task.completed;
+        task.completedDate = new Date().toISOString().split('T')[0];
+        console.log(`Task with ID: ${taskId} changed to ${task.completed ? 'Completed'.green : 'Pending'.red}`);
+    } else {
+        console.log(`Task with ID: ${taskId} not found`);
+    }
+}

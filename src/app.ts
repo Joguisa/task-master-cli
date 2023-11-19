@@ -1,5 +1,5 @@
 import 'colors';
-import { showMenu, pause, readInput, listTasksToDelete } from './helpers/mensajes';
+import { showMenu, pause, readInput, listTasksToDelete, listTasksToChange, changeStateTask } from './helpers/mensajes';
 import { readDB, saveDB } from './helpers/saveFile';
 import { Tasks } from './models/tasks';
 
@@ -41,11 +41,12 @@ const main = async () => {
             break;
 
             case '5':
-                // completar tareas
+                const ids = await listTasksToChange(tasks.listArr);
+                changeStateTask( ids, tasks.listArr );
             break;
 
             case '6':
-                console.log('Delete Task:'.cyan.bold);
+                console.log('Delete Task:'.cyan);
                 let id = await listTasksToDelete(tasks.listArr);
                 if (id !== '0') {
                     const ok = await readInput('Are you sure? (y/n): '.red);
@@ -57,7 +58,7 @@ const main = async () => {
             break;
 
             case '0':
-                console.log('Saliendo del programa');
+                console.log('Saliendo del programa...');
             break;
         }
 
